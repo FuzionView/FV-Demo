@@ -1,0 +1,18 @@
+<div class="identify-result">
+    <div class="feature-class" style="background-color: {{properties.color_hex}}">{{ properties.feature_class_name }}</div>
+    <div class="item"><label>Asset Owner:</label> {{ properties.owner_name }}</div>
+    <div class="item"><label>Dataset Name:</label> {{ properties.dataset_name }}</div>
+    <div class="item"><label>Status:</label> {{ properties.status|capcase }}</div>
+    {{if properties.size}}
+    <div class="item"><label>Size:</label> {{ properties.size }}</div>
+    {{/if}}
+    {{if properties.depth}}
+    <div class="item"><label>Depth:</label> {{ properties.depth }}</div>
+    {{/if}}
+    {{if properties.accuracy_value}}
+    <div class="item"><label>Accuracy:</label> {{ properties.accuracy_value }}</div>
+    {{/if}}
+    {{if properties.material}}
+    <div class="item"><label>Description:</label> {{ properties.material }}</div>
+    {{/if}}
+</div>

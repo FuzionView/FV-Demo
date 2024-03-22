@@ -1,0 +1,345 @@
+<?xml version="1.0"?>
+<mapbook version="3.0">
+    <!--
+        The mapping services define the source of the mapping data.
+    -->
+
+	<configuration>
+        	<param name="initial_extent">-10512615.8,5568595.5,-10452426.0,5602760.6</param>
+	</configuration>
+
+    <map-source name="usng-grid" type="usng">
+        <layer name="usng-grid" status="off" />
+    </map-source>
+
+    <map-source name="sketch" type="vector" title="Drawing and Markup">
+        <layer name="default" selectable="true" status="on">
+            <style><![CDATA[
+            {
+                "circle-radius": ["coalesce", ["get", "style:stroke-width"], 4],
+                "circle-color": ["coalesce", ["get", "style:fill-color"], "#fec44f"],
+                "circle-stroke-color": ["coalesce", ["get", "style:stroke-color"], "#d95f0e"],
+                "fill-color": ["coalesce", ["get", "style:fill-color"], "#fec44f"],
+                "fill-opacity": ["coalesce", ["get", "style:fill-opacity"], 0.6],
+                "line-color": ["coalesce", ["get", "style:stroke-color"], "#d95f0e"],
+                "line-opacity": ["coalesce", ["get", "style:stroke-opacity"], 0.8],
+                "line-width": ["coalesce", ["get", "style:stroke-width"], 4],
+                "text-field": "{label}",
+                "text-color": ["coalesce", ["get", "style:label-color"], "#333333"],
+                "text-size": ["coalesce", ["get", "style:label-size"], 16]
+            }
+            ]]></style>
+
+            <legend type="html"><![CDATA[
+            The <b>Drawing and Markup</b> layer can be used to add user defined shapes
+            to the map.<br>
+            <div style='padding-top: 3px; padding-bottom: 5px;'>
+                <div style='vertical-align: middle; display: inline-block; width: 2em; height: 1em; background-color: #fec44f; border: solid 2px #d95f0e;'></div>
+                <b>Drawing</b>
+            </div>
+            ]]></legend>
+
+            <template name="identify" auto="true" />
+        </layer>
+
+        <properties>
+            <property name="label" label="Sketch label" />
+
+            <property name="style:label-color"
+                label="Label color" type="color" default="#333333" />
+
+            <property name="style:label-size"
+                label="Label size" type="number" default="16" />
+
+            <property name="style:stroke-color"
+                label="Stroke color" type="color" default="#d95f0e" />
+
+            <property name="style:stroke-width"
+                label="Stroke size" type="range" min="0" max="10" default="4" />
+
+            <property name="style:stroke-opacity"
+                label="Stroke opacity" type="range"
+                min="0" max="1" step="0.1" default="0.8" />
+
+            <property name="style:fill-color"
+                label="Fill color" type="color" default="#d95f0e" />
+
+            <property name="style:fill-opacity"
+                label="Fill opacity" type="range"
+                min="0" max="1" step="0.1" default="0.8" />
+
+        </properties>
+    </map-source>
+
+    <map-source name="upload_located_lines" type="wfs">
+	<url>/maps/uploads.map</url>
+        <param name="typename" value="ms:located_lines"/>
+        <config name="pixel-tolerance" value="3"/>
+
+        <layer name="located_lines" selectable="true" title="Located Lines">
+            <style><![CDATA[
+            {
+                "line-color" : ["coalesce", ["get", "color_hex"], "#808080"],
+                "line-width" : 2,
+                "circle-radius": ["coalesce", ["get", "style:stroke-width"], 4],
+                "circle-color": ["coalesce", ["get", "color_hex"], "#808080"],
+                "circle-stroke-color": ["coalesce", ["get", "color_hex"], "#808080"]
+            }
+	    ]]></style>
+
+            <template name="identify" auto="true" />
+       </layer>
+    </map-source>
+    <map-source name="upload_depth_points" type="wfs">
+	<url>/maps/uploads.map</url>
+        <param name="typename" value="ms:depth_points"/>
+        <config name="pixel-tolerance" value="3"/>
+
+        <layer name="depth_points" selectable="true" title="Depth Points">
+            <style><![CDATA[
+            {
+                "circle-radius": ["coalesce", ["get", "style:stroke-width"], 4],
+                "circle-color": ["coalesce", ["get", "color_hex"], "#808080"],
+                "circle-stroke-color": ["coalesce", ["get", "color_hex"], "#808080"]
+            }
+	    ]]></style>
+
+            <template name="identify" auto="true" />
+       </layer>
+    </map-source>
+    <map-source name="uploads" type="wms">
+	    <url>/maps/uploads.map</url>
+	    <param name="FORMAT" value="image/png"/>
+	    <layer name="located_lines"><template name="identify" auto="true"/></layer>
+	    <layer name="depth_points"><template name="identify" auto="true"/></layer>
+    </map-source>
+
+
+    <map-source name="all_point_features" type="wfs">
+	<url>/maps/uumpt.map</url>
+        <param name="typename" value="ms:features_points"/>
+        <config name="pixel-tolerance" value="3"/>
+
+        <layer name="features" selectable="true" title="Features">
+            <style><![CDATA[
+            {
+                "circle-radius": ["coalesce", ["get", "style:stroke-width"], 4],
+                "circle-color": ["coalesce", ["get", "color_hex"], "#000000"],
+                "circle-stroke-color": ["coalesce", ["get", "color_hex"], "#000000"]
+            }
+	    ]]></style>
+
+            <template name="identify" auto="true" />
+       </layer>
+    </map-source>
+    <map-source name="all_line_features" type="wfs">
+	<url>/maps/uumpt.map</url>
+        <param name="typename" value="ms:features_lines"/>
+        <config name="pixel-tolerance" value="3"/>
+
+        <layer name="features" selectable="true" title="Features">
+            <style><![CDATA[
+            {
+                "line-color" : ["coalesce", ["get", "color_hex"], "#000000"],
+                "line-width" : 2
+            }
+	    ]]></style>
+
+            <template name="identify" auto="true" />
+       </layer>
+    </map-source>
+    <map-source name="all_polygon_features" type="wfs">
+	<url>/maps/uumpt.map</url>
+        <param name="typename" value="ms:features_polygons"/>
+        <config name="pixel-tolerance" value="3"/>
+
+        <layer name="features" selectable="true" title="Features">
+            <style><![CDATA[
+            {
+                "line-color" : ["coalesce", ["get", "color_hex"], "#000000"],
+                "line-width" : 2
+            }
+	    ]]></style>
+
+            <template name="identify" auto="true" />
+       </layer>
+    </map-source>
+
+    <map-source name="uumpt" type="wms">
+	    <url>/maps/uumpt.map</url>
+	    <param name="FORMAT" value="image/png"/>
+	    <layer name="tickets"><template name="identify" src="templates/uumpt-tickets.html"/></layer>
+	    <layer name="survey"><template name="identify" src="templates/uumpt.html"/></layer>
+            <layer name="electric"><template name="identify" src="templates/uumpt.html"/></layer>
+            <layer name="oil_gas_steam"><template name="identify" src="templates/uumpt.html"/></layer>
+            <layer name="comm_cable_conduit"><template name="identify" src="templates/uumpt.html"/></layer>
+            <layer name="potable_water"><template name="identify" src="templates/uumpt.html"/></layer>
+            <layer name="reclaimed_water"><template name="identify" src="templates/uumpt.html"/></layer>
+            <layer name="sewers_drains"><template name="identify" src="templates/uumpt.html"/></layer>
+            <layer name="reference"><template name="identify" src="templates/uumpt.html"/></layer>
+    </map-source>
+
+    <map-source name="ags" type="ags">
+        <url>https://services.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer</url>
+        <layer name="NatGeo_World_Map"/>
+        <param name="FORMAT" value="png"/>
+        <param name="cross-origin" value="anonymous"/>
+    </map-source>
+
+
+    <map-source name="ags-vector-dc21" type="ags-vector">
+        <url>https://gis2.co.dakota.mn.us/arcgis/rest/services/DCGIS_OL_Transportation/MapServer/21</url>
+        <layer name="runways" selectable="true" title="Runways">
+            <style><![CDATA[
+            {
+                "line-color" : "#010138",
+                "line-width" : 2
+            }
+            ]]></style>
+            <template name="identify" auto="true" />
+            <template name="search"><![CDATA[
+                <div class="search-result">
+                    <div class="search-label">
+                        {{ properties.Name }}
+                    </div>
+                    <div class="search-action">
+                        <div style="padding: 2px">
+                            <a onClick="app.zoomToExtent([{{ properties.boundedBy | join }}], 'EPSG:3857')" class="zoomto-link">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            ]]></template>
+            <template name="select" alias="search"/>
+            <template name="select-grid-columns"><![CDATA[
+            [
+                {
+                    "title": ""
+                },
+                {
+                    "title": "Name",
+                    "property" : "Name",
+                    "filter" : {
+                        "type" : "list"
+                    }
+                }
+            ]
+            ]]></template>
+            <template name="select-grid-row"><![CDATA[
+            <tr
+              onmouseenter="app.highlightFeatures({'OBJECTID' : '{{ properties.OBJECTID }}'}, true)"
+              onmouseleave="app.clearHighlight()"
+            >
+                <td>
+                  <a onClick="app.zoomToExtent([{{ properties.boundedBy | join }}], 'EPSG:3857')" class="zoomto-link">
+                    <i class="fa fa-search"></i>
+                  </a>
+                </td>
+                <td>
+                  {{ properties.Name }}
+                </td>
+            </tr>
+            ]]></template>
+        </layer>
+    </map-source>
+
+
+    <map-source name="osm" type="wms">
+        <layer name="default" status="on">
+            <attribution><![CDATA[
+                &copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> Contributors.
+            ]]></attribution>
+        </layer>
+	<url>https://maps.sharedgeo.org/datasets/basemaps/osm-default.map</url>
+    </map-source>
+
+    <map-source name="openstreetmap" type="xyz">
+        <layer name="osm_mapnik" status="off">
+            <attribution><![CDATA[
+                &copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> Contributors.
+            ]]></attribution>
+        </layer>
+        <url>https://a.tile.openstreetmap.org/{z}/{x}/{y}.png</url>
+        <url>https://b.tile.openstreetmap.org/{z}/{x}/{y}.png</url>
+        <url>https://c.tile.openstreetmap.org/{z}/{x}/{y}.png</url>
+
+        <param name="cross-origin" value="anonymous"/>
+    </map-source>
+
+    <map-source name="lmic" type="wms">
+	<url>/maps/demo/wms/wms_proxy.map</url>
+        <layer name="mncomp">
+            <legend type="nolegend"/>
+        </layer>
+    </map-source>
+
+    <!--
+        The catalog defines how the layers will be displayed in the catalog tab.
+    -->
+    <catalog>
+        <layer src="sketch/default"
+               zoomto="true" upload="true" download="true" clear="true"
+               draw-point="true" draw-line="true" draw-polygon="true"
+               draw-modify="true" draw-remove="true" draw-edit="true" />
+
+	<!-- <group title="Boundaries" expand="true">
+		<layer title="Cities" src="electric/electric" show-legend="false" legend="false" fade="true" unfade="true" classNames="inline-tools"/>
+	</group> -->
+
+	<layer title="All" src="all_point_features/features;all_line_features/features;all_polygon_features/features" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+        <group title="Overlays (new)" expand="true">
+		<layer title="Tickets" src="uumpt/tickets" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+		<layer title="Survey" src="uumpt/survey" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+		<layer title="Electric" src="uumpt/electric" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+		<layer title="Oil, Gas, Steam" src="uumpt/oil_gas_steam" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+		<layer title="Communications, Cable, Conduit" src="uumpt/comm_cable_conduit" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+		<layer title="Potable Water" src="uumpt/potable_water" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+		<layer title="Reclaimed Water" src="uumpt/reclaimed_water" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+		<layer title="Sewers/Drains" src="uumpt/sewers_drains" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+		<layer title="Reference" src="uumpt/reference" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+        </group>
+	<group title="Uploads" expand="true">
+	  <layer title="Located Lines" src="uploads/located_lines" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+	  <layer title="Depth Points" src="uploads/depth_points" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+	  <layer title="Located Lines (vector)" src="upload_located_lines/located_lines" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+	  <layer title="Depth Points (vector)" src="upload_depth_points/depth_points" show-legend="true" legend="true" legend-toggle="true" fade="true" unfade="true" classNames="inline-tools"/>
+	</group>
+        <group title="Grids">
+            <layer src="usng-grid/usng-grid" title="USNG Grid" />
+        </group>
+
+        <group title="Backgrounds" expand="true" multiple="false">
+            <layer title="No background" src="blank/blank" status="on" />
+            <layer title="Reprojected Regional Aerial" src="lmic/mncomp" show-legend="false" legend="false" fade="true" unfade="true" classNames="inline-tools"/>
+
+            <layer title="OpenStreetMap Local" src="osm/default" legend="false" fade="true" unfade="true" classNames="inline-tools" />
+            <layer title="OpenStreetMap" src="openstreetmap/osm_mapnik" legend="false" fade="true" unfade="true" classNames="inline-tools" />
+            <layer title="ArcGIS Rest Example" src="ags/NatGeo_World_Map" show-legend="false" legend="false" fade="true" unfade="true" classNames="inline-tools" />
+        </group>
+    </catalog>
+
+    <!--
+        The toolbar defines which services are referneces in the toolbar
+    -->
+    <toolbar>
+        <tool name="fullextent" title="Full Extent" type="action"/>
+        <tool name="measure" title="Measure" type="service"/>
+        <tool name="print" title="Print" type="action"/>
+
+        <tool name="identify" title="Identify" type="service"/>
+
+        <tool name="select" title="Select Features" type="service"/>
+
+        <drawer name="searches" title="Search">
+            <tool name="search-runways" title="Search Runways" type="service"/>
+            <tool name="search" title="Search Parcels" type="service"/>
+            <tool name="single-search" css-class="tool search" title="Single field search" type="service"/>
+            <tool name="geocode" title="Geocode an Address" type="service"/>
+        </drawer>
+
+        <tool name="findme" title="Find Me" type="action"/>
+        <tool name="reload" title="Start Over" type="action"/>
+        <tool name="bookmark" title="Bookmark" type="action"/>
+    </toolbar>
+</mapbook>

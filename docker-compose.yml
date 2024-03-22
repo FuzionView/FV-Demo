@@ -1,0 +1,63 @@
+services:
+  fv-db-maint:
+    image: ghcr.io/fuzionview/fv-demo:latest
+    build:
+      context: .
+    #depends-on:
+    #  postgres:
+    #    condition: service_healthy
+    #  fv-apache-server:
+    #    condition: service_healthy 
+    command: /opt/FuzionView/scripts/fv-db-maint.sh
+
+  fv-ticket-loader:
+    image: ghcr.io/fuzionview/fv-demo:latest
+    #depends-on:
+    #  fv-api-server:
+    #    condition: service_healthy
+    command: /opt/FuzionView/scripts/fv-ticket-loader.sh
+
+  fv-api-server:
+    image: ghcr.io/fuzionview/fv-demo:latest
+    #depends-on:
+    #  postgres:
+    #    condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: curl --silent --fail http://localhost:8080 || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    command: /opt/FuzionView/fv_api_server/fv_api_server --bind-address 0.0.0.0 --template-dir=/opt/FuzionView/fv_api_server/templates --wms-url="http://fv-apache-server/maps/uumpt.map"
+
+  fv-apache-server:
+    image: ghcr.io/fuzionview/fv-demo:latest
+    #depends-on:
+    #  postgres:
+    #    condition: service_healthy
+    #  fv-api-server:
+    #    condition: service_healthy
+    healthcheck:
+      test: curl --silent --fail http://localhost/index.html || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+    command: /opt/FuzionView/scripts/fv-apache-server.sh
+    #volumes:
+    #  - "./fv_html:/opt/FuzionView/static_html"
+    ports:
+      - "4443:443"
+
+  postgres:
+    image: ghcr.io/fuzionview/fv-demo:latest
+    healthcheck:
+      test: "[ -f /opt/FuzionView/.db_init_done ] && psql 'host=postgres dbname=fv user=fv_mapserv password=password' -tc 'select postgis_full_version()' || exit 1"
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    #environment:
+    #  POSTGRES_PASSWORD: password
+    command: /opt/FuzionView/scripts/postgres.sh
+    ports:
+      - "54321:5432"
