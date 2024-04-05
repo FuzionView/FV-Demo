@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link href="js/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">	
+		
+		<title>FuzionView</title>
+	</head>
+	<body>
+		<div id="welcome" class="container-sm mt-3 border">
+			<p>Welcome to FuzionView.</p>
+
+			<p>You are logged in as <span id="username"></span></p>
+
+			<p>
+				Possible places to go:
+				<ul>
+					<li><a href="/geomoose" title="GeoMoose">GeoMoose</a></li>
+					<li><a href="/tickets" title="Ticket List">Ticket List</a></li>
+					<li><a href="/api/whoami" title="Who Am I">Who Am I</a></li>
+					<li><a href="/fail" title="Keep Out!">Keep Out!</a></li>
+					<li><a href="https://fuzionview.github.io/FV-Docs/" title="FuzionView Documentation">FuzionView Documentation</a></li>
+				</ul>
+			</p>
+			
+			<div class="w-100 m-5 mb-3 text-center">
+				<a id="logout" class="btn btn-danger" href=""  role="button">Logout</a>
+			</div>
+		</div>
+ 	 	<script type="text/javascript">
+			async function whoami() {
+				const response = await fetch("/api/whoami", {
+					headers: {
+						"Accept": "application/json",
+					}
+				});
+				if (response.status != 200) {
+					// failed to query username
+					return;
+				}
+				
+				const json = await(response.json());
+
+				if (json.name == "") {
+					// failed to get username
+					return;
+				}
+				
+				document.getElementById("username").innerText = json.name + " (" + json.email + ")";
+				document.getElementById("logout").setAttribute('href', json.logout_link);
+			}
+			whoami();
+		</script>
+	</body>
+</html>
