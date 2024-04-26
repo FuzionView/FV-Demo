@@ -19,6 +19,12 @@ if [ ! -f .db_init_done ] ; then
 	\q
 	EOF
 
+	# Load Rails Migrations
+	(
+		cd /opt/FuzionView/admin
+		PG_HOST=localhost bin/rails db:migrate
+	)
+
 	# Enable non-local connections
 	cat > /etc/postgresql/15/main/conf.d/local.conf <<-EOF
 	listen_addresses = '*'
@@ -31,6 +37,7 @@ if [ ! -f .db_init_done ] ; then
 	pg_ctlcluster --skip-systemctl-redirect 15 main stop
 	touch .db_init_done
 fi
+
 
 pg_ctlcluster --skip-systemctl-redirect --foreground 15 main start 
 

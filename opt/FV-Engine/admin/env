@@ -1,0 +1,18 @@
+PG_DB=fv
+PG_USER=fv_admin
+PG_PASS=password
+PG_HOST=postgres
+PG_PORT=5432
+
+OP_CLIENT_ID="fuzionview-demo-localhost"
+OP_SECRET_KEY="lN6HJyAXlDzxHFsTWsv9GPZgP2cvdKkR"
+OP_REDIRECT_URI="https://localhost:4443/admin/auth/oidc/callback"
+OP_HOST="sso.sharedgeo.org"
+OP_REALM="/realms/SharedGeo"
+OP_AUTH_ENDPOINT="/protocol/openid-connect/auth"
+OP_TOKEN_ENDPOINT="/protocol/openid-connect/token"
+OP_USERINFO_ENDPOINT="/protocol/openid-connect/userinfo"
+OP_JWKS_ENDPOINT="/protocol/openid-connect/certs"
+
+FV_ADMINISTRATOR=Administrator
+FV_DATA_PROVIDER="Data Provider"

@@ -94,6 +94,22 @@ COPY src/FV-Client .
 RUN npm install && npm run build
 
 
+############################### FV Admin Rails ###########################
+FROM deb-base as build-fv-admin
+
+RUN apt-get install -y \
+        build-essential \
+	ruby-dev \
+	ruby-bundler \
+	libpq-dev \
+	libyaml-dev
+
+WORKDIR /opt/FuzionView/admin
+COPY src/FV-Admin .
+RUN chmod 1777 /opt/FuzionView/admin/tmp
+
+RUN bundle install --deployment
+
 
 
 ############################### Demo Image ###############################
@@ -114,6 +130,7 @@ RUN apt-get install -y \
        libprotobuf-c1 \
        librsvg2-2 \
       apache2 \
+       libapache2-mod-passenger \
        python3-psycopg2 \
        postgresql-client \
        curl \
@@ -122,13 +139,14 @@ RUN apt-get install -y \
 COPY --from=build-mapserver /opt/mapserver /opt/mapserver
 COPY --from=build-fv-engine /opt/FuzionView /opt/FuzionView
 COPY --from=build-fv-client /src/dist /opt/FuzionView/static_html/dist
+COPY --from=build-fv-admin /opt/FuzionView/admin /opt/FuzionView/admin
 COPY static_html /opt/FuzionView/static_html
 
 COPY scripts /opt/FuzionView/scripts
 
 # Install Apache Config
 COPY etc /etc
-RUN a2enmod actions cgid headers http2 proxy proxy_http rewrite ssl socache_shmcb && \
+RUN a2enmod actions cgid headers http2 passenger proxy proxy_http rewrite ssl socache_shmcb && \
     a2ensite default-ssl && \
     rm -r /var/www/html && ln -s /opt/FuzionView/static_html /var/www/html
 
@@ -138,6 +156,9 @@ COPY --chmod=600 --chown=www-data pg-user/pgpass /var/www/.pgpass
 
 COPY pg-user/pg_service.conf /root/.pg_service.conf
 COPY pg-user/pg_service.conf /var/www/.pg_service.conf
+
+# Rails config
+COPY opt/FV-Engine/admin/env /opt/FV-Engine/admin/.env
 
 VOLUME /opt/FuzionView
 
