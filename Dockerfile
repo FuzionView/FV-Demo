@@ -158,7 +158,7 @@ COPY pg-user/pg_service.conf /root/.pg_service.conf
 COPY pg-user/pg_service.conf /var/www/.pg_service.conf
 
 # Rails config
-COPY opt/FV-Engine/admin/env /opt/FV-Engine/admin/.env
+COPY opt/FuzionView/admin/env /opt/FuzionView/admin/.env
 
 VOLUME /opt/FuzionView
 
