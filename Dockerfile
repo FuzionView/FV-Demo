@@ -62,7 +62,18 @@ RUN mkdir build && cd build && \
     cp /opt/mapserver/8.0/etc/mapserver-sample.conf /opt/mapserver/8.0/etc/mapserver.conf
 
 
+############################## FV Documentation #########################
+FROM deb-base as build-fv-docs
 
+RUN apt-get install -y \
+    python3-sphinx \
+    python3-sphinx-rtd-theme \
+    make
+
+WORKDIR /src
+COPY src/FV-Docs .
+
+RUN make html
 
 ################################ FV API Server ##########################
 FROM deb-base as build-fv-engine
@@ -141,6 +152,7 @@ COPY --from=build-fv-engine /opt/FuzionView /opt/FuzionView
 COPY --from=build-fv-client /src/dist /opt/FuzionView/static_html/dist
 COPY --from=build-fv-admin /opt/FuzionView/admin /opt/FuzionView/admin
 COPY static_html /opt/FuzionView/static_html
+COPY --from=build-fv-docs /src/build/html /opt/FuzionView/static_html/docs
 
 COPY scripts /opt/FuzionView/scripts
 

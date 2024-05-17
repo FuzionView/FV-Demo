@@ -9,10 +9,17 @@ mkdir -p src
     [ -d mapserver ] || git clone --depth 1 https://github.com/klassenjs/mapserver -b branch-8-0-klassenjs
     [ -d FV-Client ] || git clone --depth 1 git@github.com:FuzionView/FV-Client
     [ -d FV-Admin ] || git clone --depth 1 git@github.com:FuzionView/FV-Admin
+    [ -d FV-Docs ] || git clone --depth 1 git@github.com:FuzionView/FV-Docs
 )
 
-DOCKER_BUILDKIT=1 docker-compose build 
+DOCKER=docker
+if hash podman-compose ; then
+	podman-compose build
+	DOCKER=podman
+else
+	DOCKER_BUILDKIT=1 docker-compose build
+fi
 
-echo Start container with: docker-compose up -d 
-echo Stop container with: docker-compose down
+echo Start container with: ${DOCKER}-compose up -d
+echo Stop container with: ${DOCKER}-compose down
 
