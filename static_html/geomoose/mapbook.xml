@@ -116,7 +116,7 @@
 
 
     <map-source name="all_point_features" type="wfs">
-	<url>/maps/uumpt.map</url>
+	<url>/maps/debug.map</url>
         <param name="typename" value="ms:features_points"/>
         <config name="pixel-tolerance" value="3"/>
 
@@ -133,7 +133,7 @@
        </layer>
     </map-source>
     <map-source name="all_line_features" type="wfs">
-	<url>/maps/uumpt.map</url>
+	<url>/maps/debug.map</url>
         <param name="typename" value="ms:features_lines"/>
         <config name="pixel-tolerance" value="3"/>
 
@@ -149,7 +149,7 @@
        </layer>
     </map-source>
     <map-source name="all_polygon_features" type="wfs">
-	<url>/maps/uumpt.map</url>
+	<url>/maps/debug.map</url>
         <param name="typename" value="ms:features_polygons"/>
         <config name="pixel-tolerance" value="3"/>
 
@@ -166,7 +166,7 @@
     </map-source>
 
     <map-source name="uumpt" type="wms">
-	    <url>/maps/uumpt.map</url>
+	    <url>/maps/debug.map</url>
 	    <param name="FORMAT" value="image/png"/>
 	    <layer name="tickets"><template name="identify" src="templates/uumpt-tickets.html"/></layer>
 	    <layer name="survey"><template name="identify" src="templates/uumpt.html"/></layer>
