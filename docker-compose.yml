@@ -28,7 +28,7 @@ services:
       interval: 1m
       timeout: 10s
       retries: 3
-    command: /opt/FuzionView/fv_api_server/fv_api_server --bind-address 0.0.0.0 --template-dir=/opt/FuzionView/fv_api_server/templates --wms-url="http://fv-apache-server/maps/uumpt.map"
+    command: /opt/FuzionView/scripts/fv-api-server.sh
 
   fv-apache-server:
     image: ghcr.io/fuzionview/fv-demo:latest
@@ -44,8 +44,6 @@ services:
       retries: 3
     restart: unless-stopped
     command: /opt/FuzionView/scripts/fv-apache-server.sh
-    #volumes:
-    #  - "./fv_html:/opt/FuzionView/static_html"
     ports:
       - "4443:443"
 

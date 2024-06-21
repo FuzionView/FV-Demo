@@ -82,6 +82,7 @@ FROM deb-base as build-fv-engine
 RUN apt-get install -y \
     make \
     g++ \
+    git \
     libboost-all-dev \
     libgdal-dev \
     libpqxx-dev \
@@ -171,7 +172,5 @@ COPY pg-user/pg_service.conf /var/www/.pg_service.conf
 
 # Rails config
 COPY opt/FuzionView/admin/env /opt/FuzionView/admin/.env
-
-VOLUME /opt/FuzionView
 
 CMD ["/opt/FuzionView/scripts/run.sh"]
