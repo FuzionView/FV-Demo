@@ -103,7 +103,7 @@ FROM docker.io/library/node:21-alpine as build-fv-client
 WORKDIR /src
 COPY src/FV-Client .
 
-RUN npm install && npm run build
+RUN npm install && npm run build:docker
 
 
 ############################### FV Admin Rails ###########################
