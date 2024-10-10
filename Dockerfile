@@ -121,6 +121,7 @@ COPY src/FV-Admin .
 RUN chmod 1777 /opt/FuzionView/admin/tmp
 
 RUN bundle install --deployment
+RUN bundle exec rails assets:precompile
 
 
 
