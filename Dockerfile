@@ -121,8 +121,10 @@ COPY src/FV-Admin .
 RUN chmod 1777 /opt/FuzionView/admin/tmp
 
 RUN bundle install --deployment
-RUN bundle exec rails assets:precompile
 
+# Rails config
+COPY opt/FuzionView/admin/env /opt/FuzionView/admin/.env
+RUN bundle exec rails assets:precompile
 
 
 ############################### Demo Image ###############################
@@ -170,8 +172,5 @@ COPY --chmod=600 --chown=www-data pg-user/pgpass /var/www/.pgpass
 
 COPY pg-user/pg_service.conf /root/.pg_service.conf
 COPY pg-user/pg_service.conf /var/www/.pg_service.conf
-
-# Rails config
-COPY opt/FuzionView/admin/env /opt/FuzionView/admin/.env
 
 CMD ["/opt/FuzionView/scripts/run.sh"]
