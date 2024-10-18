@@ -20,5 +20,5 @@ while(true) ; do
 	# Fetch features for new tickets
 	./db_maint/update_feature_cache
 
-	sleep 300 
+	sleep 30 
 done
