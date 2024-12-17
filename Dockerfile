@@ -83,6 +83,7 @@ RUN apt-get install -y \
     make \
     g++ \
     git \
+    libasio-dev \
     libboost-all-dev \
     libgdal-dev \
     libpqxx-dev \
@@ -135,6 +136,8 @@ LABEL org.opencontainers.image.description="Self contained FuzionView Demo image
 #LABEL org.opencontainers.image.licenses=GPL-3.0-only
 
 RUN apt-get install -y \
+      libasan8 \
+      libubsan1 \
       libcurlpp0 \
        libgdal32 \
        libpqxx-6.4 \
