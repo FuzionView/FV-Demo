@@ -175,5 +175,6 @@ COPY --chmod=600 --chown=www-data pg-user/pgpass /var/www/.pgpass
 
 COPY pg-user/pg_service.conf /root/.pg_service.conf
 COPY pg-user/pg_service.conf /var/www/.pg_service.conf
+COPY opt/FuzionView/gpg /opt/FuzionView/gpg
 
 CMD ["/opt/FuzionView/scripts/run.sh"]
