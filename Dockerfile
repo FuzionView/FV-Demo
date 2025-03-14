@@ -125,7 +125,7 @@ RUN bundle install --deployment
 
 # Rails config
 COPY opt/FuzionView/admin/env /opt/FuzionView/admin/.env
-RUN bundle exec rails assets:precompile
+RUN RAILS_ENV=production RAILS_RELATIVE_URL_ROOT=/admin bundle exec rails assets:precompile
 
 
 ############################### Demo Image ###############################
