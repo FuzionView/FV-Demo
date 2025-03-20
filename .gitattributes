@@ -1,0 +1,7 @@
+# Most of this repo consists of configuration files that are copied into
+# a Linux container and generally should have LF line endings to work
+# correctly inside the container.
+* text=auto eol=lf
+
+# Leave static_html/js alone (don't want to change vendored JS code)
+static_html/js/** -text
