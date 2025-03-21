@@ -86,6 +86,13 @@ Stop:
 podman-compose down -t0
 ```
 
+Dumping the logs:
+```sh
+for i in postgres fv-apache-server fv-api-server fv-ticket-loader fv-db-maint ; do 
+  podman-compose logs -t $i > $i.log 2>&1
+done
+```
+
 Accessing the FV-Demo
 ---------------------
 
