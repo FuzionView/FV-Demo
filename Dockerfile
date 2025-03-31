@@ -99,7 +99,7 @@ RUN cd FV-Engine && \
 
 
 ################################ FV Node Client ##########################
-FROM docker.io/library/node:21-alpine as build-fv-client
+FROM docker.io/library/node:22-alpine as build-fv-client
 
 WORKDIR /src
 COPY src/FV-Client .
