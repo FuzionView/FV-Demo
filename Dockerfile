@@ -155,6 +155,12 @@ RUN apt-get install -y \
        curl \
       postgresql-postgis
 
+# Update System Certificates (needed for some govt websites)
+RUN curl https://deb.debian.org/debian/pool/main/c/ca-certificates/ca-certificates_20241223_all.deb -o ca-certificates_20241223_all.deb && \
+    echo '8fa9a16e3ec176dd24ad3078ea0914a4  ca-certificates_20241223_all.deb' | md5sum -c && \
+    dpkg -i ca-certificates_20241223_all.deb && \
+    rm ca-certificates_20241223_all.deb
+
 COPY --from=build-mapserver /opt/mapserver /opt/mapserver
 COPY --from=build-fv-engine /opt/FuzionView /opt/FuzionView
 COPY --from=build-fv-client /src/dist /opt/FuzionView/static_html/dist
