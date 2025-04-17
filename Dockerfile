@@ -86,6 +86,7 @@ RUN apt-get install -y \
     libasio-dev \
     libboost-all-dev \
     libgdal-dev \
+    libfmt-dev \
     libpqxx-dev \
     libcurlpp-dev
 
@@ -145,6 +146,7 @@ RUN apt-get install -y \
        libfcgi-bin \
        libgdal32 \
        libglib2.0-0 \
+       libfmt9 \
        libpcre2-posix3 \
        libprotobuf-c1 \
        librsvg2-2 \
