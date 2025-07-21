@@ -7,7 +7,7 @@ PG_HOST=postgres
 PG_PORT=5432
 
 OP_CLIENT_ID="fuzionview-demo-localhost"
-OP_SECRET_KEY="lN6HJyAXlDzxHFsTWsv9GPZgP2cvdKkR"
+OP_SECRET_KEY="L5R3d1HihblMOYSb8r3xNOeeaskJmK2k"
 OP_REDIRECT_URI="https://localhost:4443/admin/auth/oidc/callback"
 OP_HOST="sso.sharedgeo.org"
 OP_REALM="/realms/SharedGeo"
