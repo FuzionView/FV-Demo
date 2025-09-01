@@ -1,15 +1,15 @@
 [submodule "src/FV-Admin"]
 	path = src/FV-Admin
-	url = git@github.com:FuzionView/FV-Admin
+	url = ../FV-Admin
 [submodule "src/FV-Client"]
 	path = src/FV-Client
-	url = git@github.com:FuzionView/FV-Client
+	url = ../FV-Client
 [submodule "src/FV-Docs"]
 	path = src/FV-Docs
-	url = git@github.com:FuzionView/FV-Docs
+	url = ../FV-Docs
 [submodule "src/FV-Engine"]
 	path = src/FV-Engine
-	url = git@github.com:FuzionView/FV-Engine
+	url = ../FV-Engine
 [submodule "src/mapserver"]
 	path = src/mapserver
 	url = https://github.com/klassenjs/mapserver
