@@ -1,4 +1,4 @@
-FROM docker.io/library/debian:12 as deb-base
+FROM docker.io/library/debian:13 as deb-base
 
 RUN apt-get update \
     && apt-get upgrade -y \
@@ -140,13 +140,13 @@ RUN apt-get install -y \
       libasan8 \
       libubsan1 \
       libcurlpp0 \
-       libgdal32 \
-       libpqxx-6.4 \
+       libgdal36 \
+       libpqxx-7.10 \
       libcairo2 \
        libfcgi-bin \
-       libgdal32 \
+       libgdal36 \
        libglib2.0-0 \
-       libfmt9 \
+       libfmt10 \
        libpcre2-posix3 \
        libprotobuf-c1 \
        librsvg2-2 \
