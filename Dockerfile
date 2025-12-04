@@ -17,7 +17,7 @@ RUN find /etc/apt/sources.list* -type f -exec sed -i 's/Types: deb/Types: deb de
 
 # MapServer build-dep pulls in libcurl4-gnutls-dev which breaks libcurlpp which expects the openssl version
 RUN apt-get install -y \
-    libcurl4-openssl-dev    
+    libcurl4-openssl-dev
 
 WORKDIR /src
 COPY src/mapserver mapserver
@@ -66,12 +66,18 @@ RUN mkdir build && cd build && \
 FROM deb-base as build-fv-docs
 
 RUN apt-get install -y \
-    python3-sphinx \
-    python3-sphinx-rtd-theme \
+    python3-pip \
+    python3-venv \
     make
 
 WORKDIR /src
 COPY src/FV-Docs .
+
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+RUN python3 -m venv $VIRTUAL_ENV && \
+    pip3 install -r requirements.txt
 
 RUN make html
 
