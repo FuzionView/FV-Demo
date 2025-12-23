@@ -1,4 +1,4 @@
-SECRET_TOKEN=deadbeef
+SECRET_KEY_BASE=deadbeef
 
 PG_DB=fv
 PG_USER=fv_admin
