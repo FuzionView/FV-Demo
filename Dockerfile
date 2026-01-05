@@ -23,8 +23,8 @@ WORKDIR /src
 COPY src/mapserver mapserver
 RUN mkdir build && cd build && \
     cmake ../mapserver \
-        -DCMAKE_INSTALL_PREFIX="/opt/mapserver/8.4" \
-        -DCMAKE_INSTALL_SYSCONFDIR="/opt/mapserver/8.4"/etc \
+        -DCMAKE_INSTALL_PREFIX="/opt/mapserver/8.6" \
+        -DCMAKE_INSTALL_SYSCONFDIR="/opt/mapserver/8.6"/etc \
         -DWITH_KML=1 \
         -DWITH_SOS=1 \
         -DWITH_WMS=1 \
@@ -57,9 +57,9 @@ RUN mkdir build && cd build && \
         -DWITH_HARFBUZZ=0 && \
     make && \
     make install && \
-    mkdir /opt/mapserver/8.4/cgi-bin && \
-    ln /opt/mapserver/8.4/bin/mapserv /opt/mapserver/8.4/cgi-bin && \
-    cp /opt/mapserver/8.4/etc/mapserver-sample.conf /opt/mapserver/8.4/etc/mapserver.conf
+    mkdir /opt/mapserver/8.6/cgi-bin && \
+    ln /opt/mapserver/8.6/bin/mapserv /opt/mapserver/8.6/cgi-bin && \
+    cp /opt/mapserver/8.6/etc/mapserver-sample.conf /opt/mapserver/8.6/etc/mapserver.conf
 
 
 ############################## FV Documentation #########################
