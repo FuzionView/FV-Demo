@@ -13,3 +13,6 @@
 [submodule "src/mapserver"]
 	path = src/mapserver
 	url = https://github.com/klassenjs/mapserver
+[submodule "src/gdal"]
+	path = src/gdal
+	url = https://github.com/osgeo/gdal
