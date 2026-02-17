@@ -4,6 +4,39 @@ RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get clean && apt-get autoclean && apt-get autoremove
 
+################################ GDAL 3.11 ###########################
+# Debian 13 comes with GDAL 3.10.3.
+# GDAL versions from 3.8 until 3.11 have a bug with SQLite and FIDs
+# so we need to build our own.  This only matters for FV-Engine.
+FROM deb-base as build-gdal
+
+RUN sed -i.bak -e 's/Types: deb/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources
+RUN apt update
+RUN apt build-dep -y gdal
+
+WORKDIR /src
+COPY src/gdal gdal
+RUN mkdir build && cd build && \
+    cmake ../gdal \
+        -DCMAKE_INSTALL_PREFIX="/opt/gdal/3.11" \
+        -DCMAKE_INSTALL_RPATH="/opt/gdal/3.11/lib" \
+        -DCMAKE_BUILD_TYPE="Release" \
+        -DBUILD_APPS=ON \
+        -DBUILD_PYTHON_BINDINGS=OFF \
+        -DBUILD_SHARED_LIBS=ON \
+        -DBUILD_TESTING=OFF \
+        -DGDAL_HIDE_INTERNAL_SYMBOLS=ON \
+        -DGDAL_USE_CURL=ON \
+        -DGDAL_USE_EXPAT=ON \
+        -DGDAL_USE_GEOS=ON \
+        -DGDAL_USE_GEOTIFF_INTERNAL=ON \
+        -DGDAL_USE_POSTGRESQL=ON \
+        -DGDAL_USE_SPATIALITE=ON \
+        -DGDAL_USE_SQLITE3=ON \
+        -DGDAL_USE_TIFF_INTERNAL=ON \
+        -DGDAL_USE_ZSTD=ON && \
+    make -j$(nproc) && \
+    make install
 
 ################################ Mapserver ##########################
 FROM deb-base as build-mapserver
@@ -81,6 +114,7 @@ RUN python3 -m venv $VIRTUAL_ENV && \
 
 RUN make html
 
+
 ################################ FV API Server ##########################
 FROM deb-base as build-fv-engine
 
@@ -98,9 +132,10 @@ RUN apt-get install -y \
 
 WORKDIR /src
 COPY src/FV-Engine FV-Engine
+COPY --from=build-gdal /opt/gdal /opt/gdal
 
 RUN cd FV-Engine && \
-    make -j$(nproc) BUILD_TYPE=Release && \
+    make -j$(nproc) BUILD_TYPE=Release GDAL=/opt/gdal/3.11 && \
     make install prefix=/opt/FuzionView
 
 
@@ -170,6 +205,7 @@ RUN curl https://deb.debian.org/debian/pool/main/c/ca-certificates/ca-certificat
     rm ca-certificates_20250419_all.deb
 
 COPY --from=build-mapserver /opt/mapserver /opt/mapserver
+COPY --from=build-gdal /opt/gdal /opt/gdal
 COPY --from=build-fv-engine /opt/FuzionView /opt/FuzionView
 COPY --from=build-fv-client /src/dist /opt/FuzionView/static_html/dist
 COPY --from=build-fv-admin /opt/FuzionView/admin /opt/FuzionView/admin
