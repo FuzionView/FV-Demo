@@ -4,7 +4,7 @@ RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get clean && apt-get autoclean && apt-get autoremove
 
-################################ GDAL 3.11 ###########################
+################################ GDAL 3.12 ###########################
 # Debian 13 comes with GDAL 3.10.3.
 # GDAL versions from 3.8 until 3.11 have a bug with SQLite and FIDs
 # so we need to build our own.  This only matters for FV-Engine.
@@ -18,8 +18,8 @@ WORKDIR /src
 COPY src/gdal gdal
 RUN mkdir build && cd build && \
     cmake ../gdal \
-        -DCMAKE_INSTALL_PREFIX="/opt/gdal/3.11" \
-        -DCMAKE_INSTALL_RPATH="/opt/gdal/3.11/lib" \
+        -DCMAKE_INSTALL_PREFIX="/opt/gdal/3.12" \
+        -DCMAKE_INSTALL_RPATH="/opt/gdal/3.12/lib" \
         -DCMAKE_BUILD_TYPE="Release" \
         -DBUILD_APPS=ON \
         -DBUILD_PYTHON_BINDINGS=OFF \
@@ -135,7 +135,7 @@ COPY src/FV-Engine FV-Engine
 COPY --from=build-gdal /opt/gdal /opt/gdal
 
 RUN cd FV-Engine && \
-    make -j$(nproc) BUILD_TYPE=Release GDAL=/opt/gdal/3.11 && \
+    make -j$(nproc) BUILD_TYPE=Release GDAL=/opt/gdal/3.12 && \
     make install prefix=/opt/FuzionView
 
 
